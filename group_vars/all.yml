@@ -1,0 +1,6 @@
+users:
+   webuser01: "zone-webservers"
+   dbuser01: "zone-dbservers"
+   webadmin01: "zone-dbservers,zone-webservers"
+
+ansible_temp_directory: /tmp/ansible_ssh

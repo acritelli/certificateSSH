@@ -1,0 +1,8 @@
+- name: create CA certificate directory
+  file: path=/etc/ssh/CA state=directory owner=root group=root mode=0700
+
+- name: create CA certificate
+  shell: echo 'y' | ssh-keygen -N '' -t ecdsa  -C "Certificate Authority" -f /etc/ssh/CA/CA
+
+- name: download public CA key
+  fetch: src=/etc/ssh/CA/CA.pub dest={{ ansible_temp_directory }}/CA.pub flat=yes

@@ -1,0 +1,32 @@
+- name: add CA public key
+  copy: src={{ ansible_temp_directory }}/CA.pub dest=/etc/ssh/CA.pub owner=root group=root
+  notify: restart sshd
+
+- name: add folder for authorized principals
+  file: path=/etc/ssh/auth_principals state=directory owner=root group=root
+  notify: restart sshd
+
+- name: remove old principal file (if it exists) for a clean slate
+  file: path=/etc/ssh/auth_principals/root state=absent
+  notify: restart sshd
+
+- name: create principal file for root
+  file: path=/etc/ssh/auth_principals/root state=touch owner=root group=root
+  notify: restart sshd
+
+- name: add root-everywhere principal
+  lineinfile: dest=/etc/ssh/auth_principals/root line=root-everywhere
+  notify: restart sshd
+
+- name: Add principals to principal file
+  lineinfile: dest=/etc/ssh/auth_principals/root line={{ item }}
+  with_items: "{{ principals }}"
+  notify: restart sshd
+
+- name: trust CA in sshd configuration
+  lineinfile: dest=/etc/ssh/sshd_config line="TrustedUserCAKeys /etc/ssh/CA.pub"
+  notify: restart sshd
+
+- name: allow principals in sshd configuration
+  lineinfile: dest=/etc/ssh/sshd_config line="AuthorizedPrincipalsFile /etc/ssh/auth_principals/%u"
+  notify: restart sshd

@@ -1,0 +1,2 @@
+- name: ensure that ansible directory for public keys and certs exists
+  file: path={{ ansible_temp_directory }} state=directory

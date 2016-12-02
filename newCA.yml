@@ -1,0 +1,4 @@
+- hosts: certificateAuthority
+  become: true
+  roles:
+    - newCA

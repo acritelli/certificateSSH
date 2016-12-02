@@ -1,0 +1,8 @@
+- name: install ntp
+  yum: pkg=ntp state=present
+
+- name: start ntp
+  service: name=ntpd state=started
+ 
+- name: ensure that ntp will start on boot
+  service: name=ntpd enabled=yes

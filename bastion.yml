@@ -1,0 +1,4 @@
+- hosts: bastionHosts
+  become: true
+  roles:
+    - bastion

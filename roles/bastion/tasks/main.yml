@@ -1,0 +1,19 @@
+- name: create user accounts
+  user: name={{ item.key }} state=present
+  with_dict: "{{ users }}"
+
+- name: make sure there's an SSH directory for each user
+  file: path=/home/{{ item.key }}/.ssh/ state=directory owner={{ item.key }} group={{ item.key }}
+  with_dict: "{{ users }}"
+
+- name: create SSH keys for each user account
+  shell: echo "y" | ssh-keygen -N '' -C "{{ item.key }}" -t ecdsa -f /home/{{ item.key }}/.ssh/id_ecdsa
+  with_dict: "{{ users }}"
+
+- name: adjust permissions for user's private and public SSH key
+  file: path=/home/{{ item.key }}/.ssh/ owner={{ item.key }} group={{ item.key }} recurse=yes
+  with_dict: "{{ users }}"
+
+- name: download created SSH public key for each user
+  fetch: src=/home/{{ item.key }}/.ssh/id_ecdsa.pub dest={{ ansible_temp_directory }}/keys/{{ item.key }}.pub flat=yes
+  with_dict: "{{ users }}"

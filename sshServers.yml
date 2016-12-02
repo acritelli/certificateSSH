@@ -1,0 +1,4 @@
+- hosts: all:!bastionHosts:!certificateAuthority
+  become: true
+  roles:
+    - sshServer
