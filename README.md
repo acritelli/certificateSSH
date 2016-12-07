@@ -47,8 +47,6 @@ This is a basic implementation, with some caveats. Perfection is the enemy of gr
 
 * Editing configs may be better-handled by Jinja2 and templates.
 
-* Due to the way files are copied, this currently only works with one bastion host.
-
 * Tags could be further split out to avoid things like regenerating user SSH keys upon each run.
 
 * It may be nice to find a way to increment the serial numbers of user certificates

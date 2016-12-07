@@ -15,5 +15,5 @@
   with_dict: "{{ users }}"
 
 - name: download created SSH public key for each user
-  fetch: src=/home/{{ item.key }}/.ssh/id_ecdsa.pub dest={{ ansible_temp_directory }}/keys/{{ item.key }}.pub flat=yes
+  fetch: src=/home/{{ item.key }}/.ssh/id_ecdsa.pub dest={{ ansible_temp_directory }}/keys/
   with_dict: "{{ users }}"

@@ -2,18 +2,20 @@
   file: path=/tmp/public_keys/ state=directory
 
 - name: copy downloaded SSH public keys to CA for signing
-  copy: src={{ ansible_temp_directory }}/keys/{{ item.key }}.pub dest=/tmp/public_keys/
-  with_dict: "{{ users }}"
+  copy: src={{ ansible_temp_directory }}/keys/ dest=/tmp/public_keys
 
+#Hack provided by: http://stackoverflow.com/questions/40983741/nested-loop-with-a-list-and-a-dictionary/40989949#40989949
 - name: create signed certificates with appropriate principals
-  command: ssh-keygen -s /etc/ssh/CA/CA -I {{ item.key }} -n {{ item.value }} -V +1d /tmp/public_keys/{{ item.key }}.pub
-  with_dict:
-    "{{ users }}"
+  command: ssh-keygen -s /etc/ssh/CA/CA -I {{ item.1 }} -n {{ item.2 }} -V +1w /tmp/public_keys/{{ item.0 }}/home/{{ item.1 }}/.ssh/id_ecdsa.pub
+  with_nested:
+    - "{{ groups.bastionHosts }}"
+    - "{{ users | dictsort }}"
 
 - name: download signed certificates
-  fetch: src=/tmp/public_keys/{{ item.key }}-cert.pub dest={{ ansible_temp_directory }}/certs/{{ item.key }}-cert.pub flat=yes
-  with_dict:
-    "{{ users }}"
+  fetch: src=/tmp/public_keys/{{ item.0 }}/home/{{ item.1 }}/.ssh/id_ecdsa-cert.pub dest={{ ansible_temp_directory }}/keys/{{ item.0 }}/home/{{ item.1 }}/.ssh/ fail_on_missing=yes flat=yes
+  with_nested:
+    - "{{ groups.bastionHosts }}"
+    - "{{ users | dictsort }}"
 
 - name: delete temporary public key directory
   file: path=/tmp/public_keys/ state=absent

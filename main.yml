@@ -19,7 +19,7 @@
   tasks:
 
     - name: place signed certificates into user's .ssh folder
-      copy: src={{ ansible_temp_directory }}/certs/{{ item.key }}-cert.pub dest=/home/{{ item.key }}/.ssh/id_ecdsa-cert.pub owner={{ item.key }} group={{ item.key }}
+      copy: src={{ ansible_temp_directory }}/keys/{{ inventory_hostname }}/home/{{ item.key }}/.ssh/id_ecdsa-cert.pub dest=/home/{{ item.key }}/.ssh/ owner={{ item.key }} group={{ item.key }}
       with_dict: "{{ users }}"
 
 - include: sshServers.yml
