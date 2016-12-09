@@ -1,21 +1,20 @@
 - include: all.yml
-  tags: [initialBuild, resignOnly]
+  tags: [initialBuild, reSignOnly, reKeyReSign]
 
 - include: automationServer.yml
-  tags: [initialBuild, resignOnly]
+  tags: [initialBuild, reSignOnly, reKeyReSign]
 
 - include: newCA.yml
   tags: [initialBuild]
 
 - include: bastion.yml
-  tags: [initialBuild, resignOnly]
 
 - include: existingCA.yml
-  tags: [initialBuild, resignOnly]
+  tags: [initialBuild, reSignOnly, reKeyReSign]
 
 - hosts: bastionHosts
   become: true
-  tags: [initialBuild, resignOnly]
+  tags: [initialBuild, reSignOnly, reKeyReSign]
   tasks:
 
     - name: place signed certificates into user's .ssh folder
@@ -23,4 +22,4 @@
       with_dict: "{{ users }}"
 
 - include: sshServers.yml
-  tags: [initialBuild, resignOnly]
+  tags: [initialBuild]

@@ -18,7 +18,7 @@ The following roles, in order of execution, are implemented. Additional informat
 
 Setup is designed to be fairly straightforward. First, the **hosts** file should be modified to accurately represent your environment. The following groups of hosts are implemented:
 
-* certificateAuthority - this is the host that will sign and create certificates for all other users.
+* certificateAuthority - this is the host that will sign and create certificates for all other users. Certificates are signed for a period of 1 week, per the existingCA role.
 * bastionHosts - these hosts contain all user accounts and keypairs, and are used as "jump hosts" to other hosts in the environment
 * Other hosts (i.e. webservers, dbservers) - these are the remaining hosts in the environment. Each additional host should also have a group_vars file with a list of the appropriate principals that can be used for login (see below).
 
@@ -31,11 +31,11 @@ The following modifications must be made to the group_vars:
 
 # Tags
 
-There are currently two sets of tags implemented: **initialBuild** and **resignOnly**
+This set of playbooks implements the following tags:
 
-Executing the playbook and specifying **initialBuild** or not specifying any tags will implement an entirely new certificate authority. This will overwrite the existing keypair, if the playbook has been run previously.
-
-Executing the playbook and specifying **resignOnly** will do everything except for creating a new certificate authority. New keypairs will be create for all users and signed using an existing CA keypair.
+* initialBuild - This creates everything from scratch. A new CA key is created, users are added, SSH keys are created for each user, and certificates are generated for the keys. This role can also be used whenever the CA should be re-keyed.
+* reSignOnly - This creates new certificates for existing users using the existing CA key. This could be used after the expiration period has passed on the previously signed certificate.
+* reKeyReSign - This creates new SSH key pairs and signed certificates for existing users.
 
 # Improvement list
 
@@ -46,8 +46,6 @@ This is a basic implementation, with some caveats. Perfection is the enemy of gr
   * A better storage method for users, principals, and hosts would be more desirable instead of listing them out in group_vars.
 
 * Editing configs may be better-handled by Jinja2 and templates.
-
-* Tags could be further split out to avoid things like regenerating user SSH keys upon each run.
 
 * It may be nice to find a way to increment the serial numbers of user certificates
 

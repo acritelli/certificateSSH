@@ -2,5 +2,7 @@ users:
    webuser01: "zone-webservers"
    dbuser01: "zone-dbservers"
    webadmin01: "zone-dbservers,zone-webservers"
+   oracleadmin01: "zone-oracle"
+   superuser01: "root-everywhere"
 
 ansible_temp_directory: /tmp/ansible_ssh

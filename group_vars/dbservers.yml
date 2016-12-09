@@ -1,2 +1,3 @@
 principals:
   - zone-dbservers
+  - zone-oracle
