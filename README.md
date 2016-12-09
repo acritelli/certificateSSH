@@ -33,9 +33,9 @@ The following modifications must be made to the group_vars:
 
 This set of playbooks implements the following tags:
 
-* initialBuild - This creates everything from scratch. A new CA key is created, users are added, SSH keys are created for each user, and certificates are generated for the keys. This role can also be used whenever the CA should be re-keyed.
-* reSignOnly - This creates new certificates for existing users using the existing CA key. This could be used after the expiration period has passed on the previously signed certificate.
-* reKeyReSign - This creates new SSH key pairs and signed certificates for existing users.
+* **initialBuild** - This creates everything from scratch. A new CA key is created, users are added, SSH keys are created for each user, and certificates are generated for the keys. This role can also be used whenever the CA should be re-keyed.
+* **reSignOnly** - This creates new certificates for existing users using the existing CA key. This could be used after the expiration period has passed on the previously signed certificate.
+* **reKeyReSign** - This creates new SSH key pairs and signed certificates for existing users.
 
 # Improvement list
 
