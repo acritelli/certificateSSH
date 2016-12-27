@@ -2,6 +2,8 @@ This collection of playbooks is designed to implement parts of the architecture 
 
 These roles are designed for RHEL-based systems (tested on CentOS 7.2), but could easily be extended to work with other systems.
 
+A blog article with more discussion and a demo can be found [here.](https://www.acritelli.com/post/ansible_certificate_ssh/)
+
 # Roles
 
 The following roles, in order of execution, are implemented. Additional information about each role can be found in the role's README file.
