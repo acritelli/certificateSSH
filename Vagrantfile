@@ -11,6 +11,12 @@ SCRIPT
 
 Vagrant.configure("2") do |config|
 
+  # The CentOS 7 box does not include Virtualbox guest additions needed
+  # to share folders between the host and guest VMs.
+  # This install a plugin to automatically install/update guest additions
+  # https://github.com/dotless-de/vagrant-vbguest
+  config.vagrant.plugins = "vagrant-vbguest"
+
   config.vm.box = "centos/7"
   config.vm.synced_folder ".", "/vagrant", type: "virtualbox"
   config.vm.provision "shell",
